@@ -118,13 +118,13 @@ class WPSDB extends WPSDB_Base
         // Clear update transients when the user clicks the "Check Again" button from the update screen
         add_action('current_screen', [$this, 'check_again_clear_transients']);
 
-        $absolute_path = mb_rtrim(ABSPATH, '\\/');
-        $site_url = mb_rtrim(site_url('', 'http'), '\\/');
-        $home_url = mb_rtrim(home_url('', 'http'), '\\/');
+        $absolute_path = rtrim(ABSPATH, '\\/');
+        $site_url = rtrim(site_url('', 'http'), '\\/');
+        $home_url = rtrim(home_url('', 'http'), '\\/');
         if ($site_url != $home_url) {
             $difference = str_replace($home_url, '', $site_url);
             if (mb_strpos($absolute_path, $difference) !== false) {
-                $absolute_path = mb_rtrim(mb_substr($absolute_path, 0, -mb_strlen($difference)), '\\/');
+                $absolute_path = rtrim(mb_substr($absolute_path, 0, -mb_strlen($difference)), '\\/');
             }
         }
         $this->absolute_root_file_path = $absolute_path;
@@ -209,7 +209,7 @@ class WPSDB extends WPSDB_Base
         $mu_dir = (defined('WPMU_PLUGIN_DIR') && defined('WPMU_PLUGIN_URL')) ? WPMU_PLUGIN_DIR : trailingslashit(WP_CONTENT_DIR) . 'mu-plugins';
         $source = trailingslashit($this->plugin_dir_path) . 'compatibility/wp-sync-db-compatibility.php';
         $dest = trailingslashit($mu_dir) . 'wp-sync-db-compatibility.php';
-        if (mb_trim($_POST['install']) === '1') { // install MU plugin
+        if (trim($_POST['install']) === '1') { // install MU plugin
             if (! wp_mkdir_p($mu_dir)) {
                 _e(sprintf('The following directory could not be created: %s', $mu_dir), 'wp-sync-db');
                 exit;
@@ -672,7 +672,7 @@ class WPSDB extends WPSDB_Base
             ob_start();
             echo $response;
             $this->display_errors();
-            $maybe_errors = mb_trim(ob_get_clean());
+            $maybe_errors = trim(ob_get_clean());
             if (empty($maybe_errors) === false) {
                 $result = $this->end_ajax($maybe_errors);
 
@@ -821,7 +821,7 @@ class WPSDB extends WPSDB_Base
             }
             ob_start();
             $this->display_errors();
-            $maybe_errors = mb_trim(ob_get_clean());
+            $maybe_errors = trim(ob_get_clean());
             if (empty($maybe_errors) === false) {
                 $result = $this->end_ajax($maybe_errors);
 
@@ -852,7 +852,7 @@ class WPSDB extends WPSDB_Base
         $response = $this->remote_post($ajax_url, $data, __FUNCTION__);
         ob_start();
         $this->display_errors();
-        $maybe_errors = mb_trim(ob_get_clean());
+        $maybe_errors = trim(ob_get_clean());
         if (empty($maybe_errors) === false) {
             $result = $this->end_ajax($maybe_errors);
 
@@ -867,7 +867,7 @@ class WPSDB extends WPSDB_Base
 
         // returned data is just a big string like this query;query;query;33
         // need to split this up into a chunk and row_tracker
-        $row_information = mb_trim(mb_substr(mb_strrchr($response, "\n"), 1));
+        $row_information = trim(mb_substr(mb_strrchr($response, "\n"), 1));
         $row_information = explode(',', $row_information);
         $chunk = mb_substr($response, 0, mb_strrpos($response, ";\n") + 1);
 
@@ -927,7 +927,7 @@ class WPSDB extends WPSDB_Base
         }
         ob_start();
         $this->display_errors();
-        $maybe_errors = mb_trim(ob_get_clean());
+        $maybe_errors = trim(ob_get_clean());
         if (empty($maybe_errors) === false) {
             $result = $this->end_ajax($maybe_errors);
 
@@ -1027,7 +1027,7 @@ class WPSDB extends WPSDB_Base
                 return $result;
             }
 
-            $return = @unserialize(mb_trim($response));
+            $return = @unserialize(trim($response));
 
             if ($return === false) {
                 $error_msg = __('Failed attempting to unserialize the response from the remote server. Please contact support.', 'wp-sync-db');
@@ -1204,7 +1204,7 @@ class WPSDB extends WPSDB_Base
             return $result;
         }
 
-        $response = unserialize(mb_trim($response));
+        $response = unserialize(trim($response));
 
         if ($response === false) {
             $error_msg = __('Failed attempting to unserialize the response from the remote server. Please contact support.', 'wp-sync-db');
@@ -1404,7 +1404,7 @@ class WPSDB extends WPSDB_Base
 
     public function get_post_max_size()
     {
-        $val = mb_trim(ini_get('post_max_size'));
+        $val = trim(ini_get('post_max_size'));
         $last = mb_strtolower($val[mb_strlen($val) - 1]);
         $val = (int) $val;
         switch ($last) {
@@ -1566,7 +1566,7 @@ class WPSDB extends WPSDB_Base
         $subdomain_replace_enabled = apply_filters('wpsdb_subdomain_replace', true); // allow developers to turn off this functionality
         if ($subdomain_replace_enabled && is_multisite() && defined('SUBDOMAIN_INSTALL') && SUBDOMAIN_INSTALL & ! empty($_POST['domain_current_site'])) {
             $pattern = '|//(.*?)\\.' . preg_quote($this->get_domain_current_site(), '|') . '|';
-            $replacement = '//$1.' . mb_trim($_POST['domain_current_site']);
+            $replacement = '//$1.' . trim($_POST['domain_current_site']);
             $new = preg_replace($pattern, $replacement, $new);
         }
 
@@ -1704,7 +1704,7 @@ class WPSDB extends WPSDB_Base
 
         $current_row = -1;
         if (! empty($_POST['current_row'])) {
-            $temp_current_row = mb_trim($_POST['current_row']);
+            $temp_current_row = trim($_POST['current_row']);
             if (! empty($temp_current_row)) {
                 $current_row = (int) $temp_current_row;
             }
@@ -1831,7 +1831,7 @@ class WPSDB extends WPSDB_Base
 
         $first_select = true;
         if (! empty($_POST['primary_keys'])) {
-            $_POST['primary_keys'] = mb_trim($_POST['primary_keys']);
+            $_POST['primary_keys'] = trim($_POST['primary_keys']);
             if (! empty($_POST['primary_keys']) && is_serialized($_POST['primary_keys'])) {
                 $this->primary_keys = unserialize(stripslashes($_POST['primary_keys']));
                 $first_select = false;
@@ -2010,7 +2010,7 @@ class WPSDB extends WPSDB_Base
                                 }
                             }
                         }
-                        $insert_buffer = mb_rtrim($insert_buffer, "\n,");
+                        $insert_buffer = rtrim($insert_buffer, "\n,");
                         $insert_buffer .= " ;\n";
                         $this->stow($insert_buffer);
                         $insert_buffer = $insert_query_template;
@@ -2020,7 +2020,7 @@ class WPSDB extends WPSDB_Base
                     }
 
                     if (($query_size + mb_strlen($insert_line)) > $this->max_insert_string_len && $insert_buffer != $insert_query_template) {
-                        $insert_buffer = mb_rtrim($insert_buffer, "\n,");
+                        $insert_buffer = rtrim($insert_buffer, "\n,");
                         $insert_buffer .= " ;\n";
                         $this->stow($insert_buffer);
                         $insert_buffer = $insert_query_template;
@@ -2041,7 +2041,7 @@ class WPSDB extends WPSDB_Base
                 $row_start += $row_inc;
 
                 if ($insert_buffer != $insert_query_template) {
-                    $insert_buffer = mb_rtrim($insert_buffer, "\n,");
+                    $insert_buffer = rtrim($insert_buffer, "\n,");
                     $insert_buffer .= " ;\n";
                     $this->stow($insert_buffer);
                     $insert_buffer = $insert_query_template;
@@ -2081,7 +2081,7 @@ class WPSDB extends WPSDB_Base
     {
         global $wpdb;
 
-        return  $wpdb->{$desired_table} == $given_table || preg_match('/' . $wpdb->prefix . '[0-9]+_' . $desired_table . '/', $given_table);
+        return $wpdb->{$desired_table} == $given_table || preg_match('/' . $wpdb->prefix . '[0-9]+_' . $desired_table . '/', $given_table);
     }
 
     /**
@@ -2293,7 +2293,7 @@ class WPSDB extends WPSDB_Base
         ob_start();
         $this->display_errors();
         $response = ob_get_clean();
-        $response .= mb_trim($response);
+        $response .= trim($response);
         if (! empty($response)) {
             $result = $this->end_ajax($response);
 
@@ -2539,15 +2539,15 @@ class WPSDB extends WPSDB_Base
 			var wpsdb_this_website_name = '<?php echo sanitize_title_with_dashes(DB_NAME); ?>';
 			var wpsdb_this_download_url = '<?php echo network_admin_url($this->plugin_base . '&download='); ?>';
 			var wpsdb_this_prefix = '<?php echo $table_prefix; ?>';
-			var wpsdb_is_multisite = <?php echo  is_multisite() ? 'true' : 'false'; ?>;
-			var wpsdb_openssl_available = <?php echo  $this->open_ssl_enabled() ? 'true' : 'false'; ?>;
+			var wpsdb_is_multisite = <?php echo is_multisite() ? 'true' : 'false'; ?>;
+			var wpsdb_openssl_available = <?php echo $this->open_ssl_enabled() ? 'true' : 'false'; ?>;
 			var wpsdb_plugin_version = '<?php echo $this->plugin_version; ?>';
 			var wpsdb_max_request = '<?php echo $this->settings['max_request'] ?>';
 			var wpsdb_bottleneck = '<?php echo $this->get_bottleneck('max'); ?>';
 			var wpsdb_this_uploads_dir = '<?php echo addslashes($this->get_short_uploads_dir()); ?>';
-			var wpsdb_write_permission = <?php echo  is_writable($this->get_upload_info('path')) ? 'true' : 'false'; ?>;
+			var wpsdb_write_permission = <?php echo is_writable($this->get_upload_info('path')) ? 'true' : 'false'; ?>;
 			var wpsdb_nonces = <?php echo json_encode($nonces); ?>;
-			var wpsdb_profile = '<?php echo  isset($_GET['wpsdb-profile']) ? $_GET['wpsdb-profile'] : '-1'; ?>';
+			var wpsdb_profile = '<?php echo isset($_GET['wpsdb-profile']) ? $_GET['wpsdb-profile'] : '-1'; ?>';
 			<?php do_action('wpsdb_js_variables'); ?>
 		</script>
 		<?php
@@ -2614,7 +2614,7 @@ class WPSDB extends WPSDB_Base
         if (empty($val)) {
             return false;
         }
-        $val = mb_trim($val);
+        $val = trim($val);
         $last = mb_strtolower($val[mb_strlen($val) - 1]);
         $val = (int) $val;
         switch ($last) {
@@ -2658,7 +2658,7 @@ class WPSDB extends WPSDB_Base
                 $response = $this->remote_post($ajax_url, $data, __FUNCTION__);
                 $this->display_errors();
 
-                echo mb_trim($response);
+                echo trim($response);
                 break;
 
             case 'pull' :

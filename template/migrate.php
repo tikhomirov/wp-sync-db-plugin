@@ -38,7 +38,7 @@ if ($is_default_profile == false) {
 $loaded_profile = wp_parse_args($loaded_profile, $this->checkbox_options);
 ?>
 <script type='text/javascript'>
-	var wpsdb_default_profile = <?php echo  $is_default_profile ? 'true' : 'false'; ?>;
+	var wpsdb_default_profile = <?php echo $is_default_profile ? 'true' : 'false'; ?>;
 	<?php if (isset($loaded_profile['select_tables']) && ! empty($loaded_profile['select_tables'])) { ?>
 		var wpsdb_loaded_tables = <?php echo json_encode($loaded_profile['select_tables']); ?>;
 	<?php } ?>
@@ -48,8 +48,8 @@ $loaded_profile = wp_parse_args($loaded_profile, $this->checkbox_options);
 	<?php if (isset($loaded_profile['select_backup']) && ! empty($loaded_profile['select_backup'])) { ?>
 		var wpsdb_loaded_tables_backup = <?php echo json_encode($loaded_profile['select_backup']); ?>;
 	<?php } ?>
-	var wpsdb_convert_exclude_revisions = <?php echo  $convert_exclude_revisions ? 'true' : 'false'; ?>;
-	var wpsdb_convert_post_type_selection = <?php echo  $convert_post_type_selection ? '1' : '0'; ?>;
+	var wpsdb_convert_exclude_revisions = <?php echo $convert_exclude_revisions ? 'true' : 'false'; ?>;
+	var wpsdb_convert_post_type_selection = <?php echo $convert_post_type_selection ? '1' : '0'; ?>;
 </script>
 
 <div class="migrate-tab content-tab">
@@ -65,7 +65,7 @@ $loaded_profile = wp_parse_args($loaded_profile, $this->checkbox_options);
 			<ul class="option-group migrate-selection">
 				<li>
 					<label for="savefile">
-					<input id="savefile" type="radio" value="savefile" name="action"<?php echo  $loaded_profile['action'] == 'savefile' ? ' checked="checked"' : ''; ?> />
+					<input id="savefile" type="radio" value="savefile" name="action"<?php echo $loaded_profile['action'] == 'savefile' ? ' checked="checked"' : ''; ?> />
 					<?php _e('Export File', 'wp-sync-db'); ?>
 					</label>
 					<ul>
@@ -87,7 +87,7 @@ $loaded_profile = wp_parse_args($loaded_profile, $this->checkbox_options);
 				</li>
 				<li class="pull-list">
 					<label for="pull">
-					<input id="pull" type="radio" value="pull" name="action"<?php echo  $loaded_profile['action'] == 'pull' ? ' checked="checked"' : ''; ?> />
+					<input id="pull" type="radio" value="pull" name="action"<?php echo $loaded_profile['action'] == 'pull' ? ' checked="checked"' : ''; ?> />
 					<?php _e('Pull', 'wp-sync-db'); ?><span class="option-description"><?php _e('Replace this site\'s db with remote db', 'wp-sync-db'); ?></span>
 					</label>
 					<ul>
@@ -96,7 +96,7 @@ $loaded_profile = wp_parse_args($loaded_profile, $this->checkbox_options);
 				</li>
 				<li class="push-list">
 					<label for="push">
-					<input id="push" type="radio" value="push" name="action"<?php echo  $loaded_profile['action'] == 'push' ? ' checked="checked"' : ''; ?> />
+					<input id="push" type="radio" value="push" name="action"<?php echo $loaded_profile['action'] == 'push' ? ' checked="checked"' : ''; ?> />
 					<?php _e('Push', 'wp-sync-db'); ?><span class="option-description"><?php _e('Replace remote db with this site\'s db', 'wp-sync-db'); ?></span>
 					</label>
 					<ul>
@@ -106,7 +106,7 @@ $loaded_profile = wp_parse_args($loaded_profile, $this->checkbox_options);
 			</ul>
 
 			<div class="connection-info-wrapper clearfix">
-				<textarea class="pull-push-connection-info" name="connection_info" placeholder="<?php _e('Connection Info - Site URL &amp; Secret Key', 'wp-sync-db'); ?>"><?php echo  isset($loaded_profile['connection_info']) ? $loaded_profile['connection_info'] : ''; ?></textarea>
+				<textarea class="pull-push-connection-info" name="connection_info" placeholder="<?php _e('Connection Info - Site URL &amp; Secret Key', 'wp-sync-db'); ?>"><?php echo isset($loaded_profile['connection_info']) ? $loaded_profile['connection_info'] : ''; ?></textarea>
 				<br />
 				<div class="basic-access-auth-wrapper clearfix">
 					<input type="text" name="auth_username" class="auth-username auth-credentials" placeholder="Username" autocomplete="off" />
@@ -208,7 +208,7 @@ echo $this->get_upload_info('path');
 									<span class="right-arrow">&rarr;</span>
 								</td>
 								<td class="replace-right-col">
-									<input type="text" size="40" name="replace_new[]" class="code" placeholder="New value" value="<?php echo  isset($loaded_profile['replace_new'][$i]) ? $loaded_profile['replace_new'][$i] : ''; ?>" autocomplete="off" />
+									<input type="text" size="40" name="replace_new[]" class="code" placeholder="New value" value="<?php echo isset($loaded_profile['replace_new'][$i]) ? $loaded_profile['replace_new'][$i] : ''; ?>" autocomplete="off" />
 									<span style="display: none;" class="replace-remove-row" data-profile-id="0"></span>
 								</td>
 							</tr>
@@ -239,13 +239,13 @@ echo $this->get_upload_info('path');
 					<ul class="option-group table-migrate-options">
 						<li>
 							<label for="migrate-only-with-prefix">
-							<input id="migrate-only-with-prefix" class="multiselect-toggle" type="radio" value="migrate_only_with_prefix" name="table_migrate_option"<?php echo  $loaded_profile['table_migrate_option'] == 'migrate_only_with_prefix' ? ' checked="checked"' : ''; ?> />
+							<input id="migrate-only-with-prefix" class="multiselect-toggle" type="radio" value="migrate_only_with_prefix" name="table_migrate_option"<?php echo $loaded_profile['table_migrate_option'] == 'migrate_only_with_prefix' ? ' checked="checked"' : ''; ?> />
 							<?php _e('Migrate all tables with prefix', 'wp-sync-db'); ?> "<span class="table-prefix"><?php echo $wpdb->prefix; ?></span>"
 							</label>
 						</li>
 						<li>
 							<label for="migrate-selected">
-							<input id="migrate-selected" class="multiselect-toggle show-multiselect" type="radio" value="migrate_select" name="table_migrate_option"<?php echo  $loaded_profile['table_migrate_option'] == 'migrate_select' ? ' checked="checked"' : ''; ?> />
+							<input id="migrate-selected" class="multiselect-toggle show-multiselect" type="radio" value="migrate_select" name="table_migrate_option"<?php echo $loaded_profile['table_migrate_option'] == 'migrate_select' ? ' checked="checked"' : ''; ?> />
 							<?php _e('Migrate only selected tables below', 'wp-sync-db'); ?>
 							</label>
 						</li>
@@ -354,19 +354,19 @@ echo $this->get_upload_info('path');
 					<ul>
 						<li>
 							<label for="backup-only-with-prefix">
-							<input type="radio" id="backup-only-with-prefix" value="backup_only_with_prefix" name="backup_option"<?php echo  $loaded_profile['backup_option'] == 'backup_only_with_prefix' ? ' checked="checked"' : ''; ?> >
+							<input type="radio" id="backup-only-with-prefix" value="backup_only_with_prefix" name="backup_option"<?php echo $loaded_profile['backup_option'] == 'backup_only_with_prefix' ? ' checked="checked"' : ''; ?> >
 							<?php _e('Backup all tables with prefix', 'wp-sync-db'); ?> "<span class="table-prefix"><?php echo $wpdb->prefix; ?></span>"
 							</label>
 						</li>
 						<li>
 							<label for="backup-selected">
-							<input type="radio" id="backup-selected" value="backup_selected" name="backup_option"<?php echo  $loaded_profile['backup_option'] == 'backup_selected' ? ' checked="checked"' : ''; ?> >
+							<input type="radio" id="backup-selected" value="backup_selected" name="backup_option"<?php echo $loaded_profile['backup_option'] == 'backup_selected' ? ' checked="checked"' : ''; ?> >
 							<?php _e('Backup only tables selected for migration', 'wp-sync-db'); ?>
 							</label>
 						</li>
 						<li>
 							<label for="backup-manual-select">
-							<input type="radio" id="backup-manual-select" value="backup_manual_select" name="backup_option"<?php echo  $loaded_profile['backup_option'] == 'backup_manual_select' ? ' checked="checked"' : ''; ?> >
+							<input type="radio" id="backup-manual-select" value="backup_manual_select" name="backup_option"<?php echo $loaded_profile['backup_option'] == 'backup_manual_select' ? ' checked="checked"' : ''; ?> >
 							<?php _e('Backup only selected tables below', 'wp-sync-db'); ?>
 							</label>
 						</li>
@@ -398,7 +398,7 @@ echo $this->get_upload_info('path');
 
 			<div class="option-section save-migration-profile-wrap">
 				<label for="save-migration-profile" class="save-migration-profile checkbox-label">
-				<input id="save-migration-profile" type="checkbox" value="1" name="save_migration_profile"<?php echo  ! $is_default_profile ? ' checked="checked"' : ''; ?> />
+				<input id="save-migration-profile" type="checkbox" value="1" name="save_migration_profile"<?php echo ! $is_default_profile ? ' checked="checked"' : ''; ?> />
 				<?php _e('Save Migration Profile', 'wp-sync-db'); ?><span class="option-description"><?php _e('Save the above settings for the next time you do a similiar migration', 'wp-sync-db'); ?></span>
 				</label>
 
@@ -418,7 +418,7 @@ echo $this->get_upload_info('path');
 						    ?>
 						<li>
 							<label for="create_new" class="create-new-label">
-							<input id="create_new" type="radio" value="new" name="save_migration_profile_option"<?php echo   $is_default_profile ? ' checked="checked"' : ''; ?> />
+							<input id="create_new" type="radio" value="new" name="save_migration_profile_option"<?php echo $is_default_profile ? ' checked="checked"' : ''; ?> />
 							<?php _e('Create new profile', 'wp-sync-db'); ?>
 							</label>
 							<input type="text" placeholder="e.g. Live Site" name="create_new_profile" class="create-new-profile" />

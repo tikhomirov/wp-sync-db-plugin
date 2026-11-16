@@ -138,7 +138,7 @@ class WPSDB_Base
         $response = wp_remote_post($url, $args);
 
         if (! is_wp_error($response)) {
-            $response['body'] = mb_trim($response['body'], "\xef\xbb\xbf");
+            $response['body'] = trim($response['body'], "\xef\xbb\xbf");
         }
 
         if (is_wp_error($response)) {
@@ -181,7 +181,8 @@ class WPSDB_Base
 
             return false;
 
-        } elseif ($expecting_serial && is_serialized($response['body']) == false) {
+        }
+        if ($expecting_serial && is_serialized($response['body']) == false) {
             if (mb_strpos($url, 'https://') === 0 && $scope == 'ajax_verify_connection_to_remote_site') {
                 return $this->retry_remote_post($url, $data, $scope, $args, $expecting_serial);
             }
@@ -189,7 +190,8 @@ class WPSDB_Base
             $this->log_error($this->error, $response);
 
             return false;
-        } elseif ($response['body'] === '0') {
+        }
+        if ($response['body'] === '0') {
             if (mb_strpos($url, 'https://') === 0 && $scope == 'ajax_verify_connection_to_remote_site') {
                 return $this->retry_remote_post($url, $data, $scope, $args, $expecting_serial);
             }
@@ -197,7 +199,8 @@ class WPSDB_Base
             $this->log_error($this->error, $response);
 
             return false;
-        } elseif ($expecting_serial && is_serialized($response['body']) == true && $scope == 'ajax_verify_connection_to_remote_site') {
+        }
+        if ($expecting_serial && is_serialized($response['body']) == true && $scope == 'ajax_verify_connection_to_remote_site') {
             $unserialized_response = unserialize($response['body']);
             if (isset($unserialized_response['error']) && $unserialized_response['error'] == '1' && mb_strpos($url, 'https://') === 0) {
                 return $this->retry_remote_post($url, $data, $scope, $args, $expecting_serial);
@@ -357,7 +360,7 @@ class WPSDB_Base
         @set_time_limit($proposed_max_execution_time);
         $current_max_execution_time = ini_get('max_execution_time');
 
-        return  $proposed_max_execution_time == $current_max_execution_time;
+        return $proposed_max_execution_time == $current_max_execution_time;
     }
 
     public function get_plugin_name($plugin = false)
